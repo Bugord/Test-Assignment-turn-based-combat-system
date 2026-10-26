@@ -7,6 +7,15 @@
       "dependencies": {},
       "hash": "1739faf0b948d9bf0520841b574cdd9bc53c4779"
     },
+    "com.bugord.uikit": {
+      "version": "https://github.com/Bugord/UIKit.git?path=Assets/UIKit#v0.5.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "7166da85c92dc2b16de38d84ece80f5a5694850d"
+    },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#2.5.11",
       "depth": 0,
@@ -153,18 +162,6 @@
       "dependencies": {
         "com.unity.test-framework": "1.1.33",
         "com.unity.modules.jsonserialize": "1.0.0"
-      }
-    },
-    "com.unity.ugui": {
-      "version": "2.6.0",
-      "depth": 0,
-      "source": "builtin",
-      "dependencies": {
-        "com.unity.modules.ui": "1.0.0",
-        "com.unity.modules.imgui": "1.0.0",
-        "com.unity.modules.audio": "1.0.0",
-        "com.unity.modules.physics2d": "1.0.0",
-        "com.unity.modules.physics": "1.0.0"
       }
     },
     "jp.hadashikick.vcontainer": {
