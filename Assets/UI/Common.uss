@@ -1,0 +1,33 @@
+.screen-fill {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.panel {
+    min-width: 360px;
+    padding: 32px;
+    border-radius: 8px;
+    background-color: rgba(20, 20, 28, 0.9);
+    align-items: stretch;
+}
+
+.title {
+    font-size: 36px;
+    color: rgb(240, 240, 240);
+    -unity-text-align: middle-center;
+    margin-bottom: 24px;
+}
+
+.menu-button {
+    height: 56px;
+    font-size: 22px;
+    margin: 6px 0;
+}
+
+.screen-top-right {
+    flex-grow: 1;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 24px;
+}

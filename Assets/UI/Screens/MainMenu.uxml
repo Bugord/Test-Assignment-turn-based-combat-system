@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../Common.uss" />
+    <ui:VisualElement name="main-menu" class="screen-fill">
+        <ui:VisualElement class="panel">
+            <ui:Label text="Turn-Based Combat" class="title" />
+            <ui:Button name="battle-button" text="Battle" class="menu-button" />
+            <ui:Button name="quit-button" text="Quit" class="menu-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
