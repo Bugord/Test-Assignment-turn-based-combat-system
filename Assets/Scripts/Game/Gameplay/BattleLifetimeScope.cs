@@ -17,6 +17,8 @@ namespace Game.Gameplay
         {
             builder.RegisterScreen<BattleViewModel, BattleView>();
             builder.RegisterScreen<BattleResultPopupViewModel, BattleResultPopupView>();
+            builder.RegisterScreen<PausePopupViewModel, PausePopupView>();
+            builder.Register<BattlePause>(Lifetime.Scoped);
             builder.Register(CreateBattle, Lifetime.Scoped);
             builder.Register<UnitViews>(Lifetime.Scoped);
             builder.Register<BattleHud>(Lifetime.Scoped);

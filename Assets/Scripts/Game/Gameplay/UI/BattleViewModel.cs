@@ -17,6 +17,8 @@ namespace Game.Gameplay.UI
         private readonly BattleHud hud;
         private readonly PlayerController playerController;
         private readonly BattleConfig config;
+        private readonly BattlePause battlePause;
+        private readonly IScreenNavigator screenNavigator;
 
         private Ability selectedAbility;
 
@@ -75,16 +77,23 @@ namespace Game.Gameplay.UI
         }
 
         public Command CancelAbility { get; }
-        public Command BackToMenu { get; }
+        public AsyncCommand Pause { get; }
 
-        public BattleViewModel(BattleHud hud, PlayerController playerController, BattleConfig config)
+        public BattleViewModel(
+            BattleHud hud,
+            PlayerController playerController,
+            BattleConfig config,
+            BattlePause battlePause,
+            IScreenNavigator screenNavigator)
         {
             this.hud = hud ?? throw new ArgumentNullException(nameof(hud));
             this.playerController = playerController ?? throw new ArgumentNullException(nameof(playerController));
             this.config = config ?? throw new ArgumentNullException(nameof(config));
+            this.battlePause = battlePause ?? throw new ArgumentNullException(nameof(battlePause));
+            this.screenNavigator = screenNavigator ?? throw new ArgumentNullException(nameof(screenNavigator));
 
             CancelAbility = new Command(() => SelectAbility(null), () => selectedAbility != null);
-            BackToMenu = new Command(() => SetResult(BattleResult.BackToMenu));
+            Pause = new AsyncCommand(PauseAsync);
 
             hud.LogChanged += OnLogChanged;
             hud.TurnChanged += OnTurnChanged;
@@ -123,6 +132,27 @@ namespace Game.Gameplay.UI
             hud.LogChanged -= OnLogChanged;
             hud.TurnChanged -= OnTurnChanged;
             playerController.CurrentTurnRequestChanged -= OnCurrentTurnRequestChanged;
+        }
+
+        private async Awaitable PauseAsync()
+        {
+            PauseResult result;
+            battlePause.Pause();
+            try {
+                result = await screenNavigator.RunAsync<PausePopupViewModel, PauseResult>(LifetimeToken);
+            }
+            finally {
+                battlePause.Resume();
+            }
+
+            switch (result) {
+                case PauseResult.Restart:
+                    SetResult(BattleResult.Restart);
+                    break;
+                case PauseResult.BackToMenu:
+                    SetResult(BattleResult.BackToMenu);
+                    break;
+            }
         }
 
         private void SelectAbility(Ability ability)

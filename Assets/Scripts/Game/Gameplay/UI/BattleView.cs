@@ -40,7 +40,7 @@ namespace Game.Gameplay.UI
             RebuildTargetButtons();
 
             BindCommand("cancel-ability-button", ViewModel.CancelAbility);
-            BindCommand("menu-button", ViewModel.BackToMenu);
+            BindCommand("pause-button", ViewModel.Pause);
         }
 
         private VisualElement CreateLogItem()

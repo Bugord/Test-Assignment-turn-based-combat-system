@@ -20,3 +20,5 @@ MonoBehaviour:
     uxml: {fileID: 9197481963319205126, guid: 45fb1559fe5c0d846b96bbcfcc09da40, type: 3}
   - screenId: MainMenu
     uxml: {fileID: 9197481963319205126, guid: f344cf791aa81f444a1a6b1924445833, type: 3}
+  - screenId: PausePopup
+    uxml: {fileID: 9197481963319205126, guid: f5ef2bd9740801746b5aecb8037c9dc9, type: 3}
