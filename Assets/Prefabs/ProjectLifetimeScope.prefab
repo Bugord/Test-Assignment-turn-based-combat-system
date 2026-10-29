@@ -50,3 +50,4 @@ MonoBehaviour:
   autoInjectGameObjects: []
   panelSettings: {fileID: 11400000, guid: a3d659871de4f0c459ea6468456ddb43, type: 2}
   screenCatalog: {fileID: 11400000, guid: 9f5de07801ded8548806c7baadbfda50, type: 2}
+  battleConfig: {fileID: 11400000, guid: 1585aa6bf329cb64b964641b2d88e5e8, type: 2}

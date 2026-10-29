@@ -1,7 +1,7 @@
 using Combat.Rules;
 using UnityEngine;
 
-namespace Game.Gameplay
+namespace Game.Infrastructure
 {
     public class UnityRandom : IRandom
     {

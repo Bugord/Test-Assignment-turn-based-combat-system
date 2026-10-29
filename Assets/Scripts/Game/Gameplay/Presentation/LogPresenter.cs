@@ -5,37 +5,37 @@ using Combat;
 using Combat.Rules;
 using Combat.Units;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
 namespace Game.Gameplay.Presentation
 {
     public class LogPresenter : IBattlePresentation
     {
         private readonly TimeSpan actionDelay = TimeSpan.FromSeconds(0.3);
-        private readonly TimeSpan endDelay = TimeSpan.FromSeconds(1);
         private readonly Battle battle;
+        private readonly BattleLog log;
 
-        public LogPresenter(Battle battle)
+        public LogPresenter(Battle battle, BattleLog log)
         {
             this.battle = battle ?? throw new ArgumentNullException(nameof(battle));
+            this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
         public UniTask ShowTurnStartAsync(Unit actor, CancellationToken token)
         {
-            Debug.Log($"Round {battle.Round}, {actor}'s turn");
+            log.Add($"Round {battle.Round}, {actor}'s turn");
             return UniTask.CompletedTask;
         }
 
         public async UniTask PlayAsync(ActionResult result, CancellationToken token)
         {
-            Debug.Log(Describe(result));
+            log.Add(Describe(result));
             await UniTask.Delay(actionDelay, cancellationToken: token);
         }
 
-        public async UniTask ShowBattleEndAsync(Team winner, CancellationToken token)
+        public UniTask ShowBattleEndAsync(Team winner, CancellationToken token)
         {
-            Debug.Log($"{winner} won in round {battle.Round}");
-            await UniTask.Delay(endDelay, cancellationToken: token);
+            log.Add($"{winner} won in round {battle.Round}");
+            return UniTask.CompletedTask;
         }
 
         private string Describe(ActionResult result)

@@ -1,3 +1,4 @@
+using Game.Gameplay.Config;
 using UIKit;
 using UIKit.VContainer;
 using UnityEngine;
@@ -15,9 +16,13 @@ namespace Game
         [SerializeField]
         private ScreenCatalog screenCatalog;
 
+        [SerializeField]
+        private BattleConfig battleConfig;
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.AddUIKit(panelSettings, screenCatalog);
+            builder.RegisterInstance(battleConfig);
         }
     }
 }

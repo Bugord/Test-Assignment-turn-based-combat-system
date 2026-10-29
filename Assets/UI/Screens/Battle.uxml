@@ -1,6 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
     <ui:Style src="../Common.uss" />
-    <ui:VisualElement name="battle" class="screen-top-right">
-        <ui:Button name="menu-button" text="Menu" class="menu-button" />
+    <ui:VisualElement name="battle" class="battle-screen">
+        <ui:VisualElement class="battle-controls">
+            <ui:Button name="menu-button" text="Menu" class="menu-button" />
+            <ui:Button name="next-turn-button" text="Next turn" class="menu-button" />
+        </ui:VisualElement>
+        <ui:ListView name="log-list" class="battle-log" selection-type="None" fixed-item-height="26" />
     </ui:VisualElement>
 </ui:UXML>

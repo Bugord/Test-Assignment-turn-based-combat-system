@@ -25,9 +25,27 @@
     margin: 6px 0;
 }
 
-.screen-top-right {
+.battle-screen {
     flex-grow: 1;
-    align-items: flex-end;
-    justify-content: flex-start;
+    justify-content: space-between;
     padding: 24px;
+}
+
+.battle-controls {
+    align-self: flex-end;
+    width: 220px;
+}
+
+.battle-log {
+    height: 320px;
+    width: 720px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background-color: rgba(20, 20, 28, 0.8);
+}
+
+.battle-log-text {
+    font-size: 18px;
+    color: rgb(230, 230, 230);
+    -unity-text-align: middle-left;
 }

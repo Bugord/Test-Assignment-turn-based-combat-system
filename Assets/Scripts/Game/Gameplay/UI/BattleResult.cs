@@ -1,4 +1,4 @@
-namespace Game.Gameplay
+namespace Game.Gameplay.UI
 {
     public enum BattleResult
     {

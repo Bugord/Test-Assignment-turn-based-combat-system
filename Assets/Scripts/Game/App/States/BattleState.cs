@@ -3,7 +3,6 @@ using Cysharp.Threading.Tasks;
 using Game.Gameplay;
 using Game.Infrastructure;
 using Game.Infrastructure.Scenes;
-using UIKit;
 using UniState;
 using VContainer;
 using VContainer.Unity;
@@ -32,8 +31,8 @@ namespace Game.App.States
             await using var scene = await SceneLease.LoadAsync(SceneNames.Battle, token);
             using var scope = applicationScope.CreateChild<BattleLifetimeScope>(childScopeName: "Battle Scope");
 
-            var screenNavigator = scope.Container.Resolve<IScreenNavigator>();
-            await screenNavigator.RunAsync<BattleViewModel, BattleResult>(token);
+            var session = scope.Container.Resolve<BattleSession>();
+            await session.RunAsync(token);
         }
     }
 }

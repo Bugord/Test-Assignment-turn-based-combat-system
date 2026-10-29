@@ -18,7 +18,8 @@ namespace Game.Gameplay.Config
         [SerializeField]
         private EffectType effect;
 
-        [SerializeField, Min(0)]
+        [SerializeField]
+        [Min(0)]
         private int power;
 
         [SerializeField]
@@ -27,7 +28,8 @@ namespace Game.Gameplay.Config
         [SerializeField]
         private bool requiresFrontline;
 
-        [SerializeField, Min(0)]
+        [SerializeField]
+        [Min(0)]
         private int frontlinePenalty;
 
         public Ability CreateAbility()
