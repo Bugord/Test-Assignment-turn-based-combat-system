@@ -19,15 +19,29 @@ namespace Game.Gameplay
 
         public async UniTask RunAsync(CancellationToken token)
         {
-            using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(token);
-            var battle = driver.RunAsync(cancellation.Token).SuppressCancellationThrow();
+            using var battleCancellation = CancellationTokenSource.CreateLinkedTokenSource(token);
+            using var screenCancellation = CancellationTokenSource.CreateLinkedTokenSource(token);
+            var battle = RunBattleAsync(screenCancellation, battleCancellation.Token);
 
             try {
-                await screenNavigator.RunAsync<BattleViewModel, BattleResult>(token);
+                await screenNavigator.RunAsync<BattleViewModel, BattleResult>(screenCancellation.Token);
             }
             finally {
-                cancellation.Cancel();
+                battleCancellation.Cancel();
                 await battle;
+            }
+        }
+
+        private async UniTask RunBattleAsync(CancellationTokenSource screenCancellation, CancellationToken token)
+        {
+            try {
+                await driver.RunAsync(token);
+            }
+            catch (OperationCanceledException) when (token.IsCancellationRequested) {
+            }
+            catch {
+                screenCancellation.Cancel();
+                throw;
             }
         }
     }

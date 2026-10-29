@@ -8,12 +8,14 @@ namespace Combat.Rules
     {
         public Unit Actor { get; }
         public Ability Ability { get; }
+        public Unit Target { get; }
         public IReadOnlyList<TargetOutcome> Outcomes { get; }
 
-        public ActionResult(Unit actor, Ability ability, IReadOnlyList<TargetOutcome> outcomes)
+        public ActionResult(Unit actor, Ability ability, Unit target, IReadOnlyList<TargetOutcome> outcomes)
         {
             Actor = actor;
             Ability = ability;
+            Target = target;
             Outcomes = outcomes;
         }
     }

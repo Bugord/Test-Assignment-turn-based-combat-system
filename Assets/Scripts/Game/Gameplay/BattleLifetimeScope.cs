@@ -17,7 +17,9 @@ namespace Game.Gameplay
         {
             builder.RegisterScreen<BattleViewModel, BattleView>();
             builder.Register(CreateBattle, Lifetime.Scoped);
-            builder.Register<BattleHud>(Lifetime.Scoped).As<IBattlePresentation>().AsSelf();
+            builder.Register<UnitViews>(Lifetime.Scoped);
+            builder.Register<BattleHud>(Lifetime.Scoped);
+            builder.Register<BattlePresenter>(Lifetime.Scoped).As<IBattlePresentation>();
             builder.Register<PlayerController>(Lifetime.Scoped);
             builder.Register<AiDecisionMaker>(Lifetime.Scoped);
             builder.Register<AiController>(Lifetime.Scoped);

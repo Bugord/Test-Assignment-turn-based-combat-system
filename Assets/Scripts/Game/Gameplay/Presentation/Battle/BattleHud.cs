@@ -1,17 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Combat;
 using Combat.Rules;
 using Combat.Units;
-using Cysharp.Threading.Tasks;
 
 namespace Game.Gameplay.Presentation
 {
-    public class BattleHud : IBattlePresentation
+    public class BattleHud
     {
-        private readonly TimeSpan actionDelay = TimeSpan.FromSeconds(0.3);
         private readonly List<string> log = new List<string>();
         private readonly Battle battle;
 
@@ -27,27 +24,24 @@ namespace Game.Gameplay.Presentation
             this.battle = battle ?? throw new ArgumentNullException(nameof(battle));
         }
 
-        public UniTask ShowTurnStartAsync(Unit actor, CancellationToken token)
+        public void SetActiveUnit(Unit actor)
         {
             ActiveUnit = actor;
             ActiveUnitChanged?.Invoke();
             AddLine($"Round {battle.Round}, {actor}'s turn");
-            return UniTask.CompletedTask;
         }
 
-        public async UniTask PlayAsync(ActionResult result, CancellationToken token)
+        public void AddAction(ActionResult result)
         {
             AddLine(Describe(result));
-            await UniTask.Delay(actionDelay, cancellationToken: token);
         }
 
-        public UniTask ShowBattleEndAsync(Team winner, CancellationToken token)
+        public void SetWinner(Team winner)
         {
             ActiveUnit = null;
             Winner = winner;
             ActiveUnitChanged?.Invoke();
             AddLine($"{winner} won in round {battle.Round}");
-            return UniTask.CompletedTask;
         }
 
         private void AddLine(string line)

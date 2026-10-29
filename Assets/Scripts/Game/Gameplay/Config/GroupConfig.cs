@@ -16,6 +16,8 @@ namespace Game.Gameplay.Config
         [SerializeField]
         private List<UnitConfig> slots = new List<UnitConfig>();
 
+        public UnitConfig UnitAt(int slot) => slots[slot];
+
         public GroupDefinition CreateDefinition()
         {
             var units = slots.Select(unit => unit == null ? null : unit.CreateDefinition());

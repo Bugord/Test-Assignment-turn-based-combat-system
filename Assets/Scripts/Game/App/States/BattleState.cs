@@ -1,9 +1,12 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Gameplay;
+using Game.Gameplay.Presentation;
 using Game.Infrastructure;
 using Game.Infrastructure.Scenes;
 using UniState;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -20,7 +23,12 @@ namespace Game.App.States
 
         public override async UniTask<StateTransitionInfo> Execute(CancellationToken token)
         {
-            await RunBattleAsync(token);
+            try {
+                await RunBattleAsync(token);
+            }
+            catch (Exception exception) when (exception is not OperationCanceledException) {
+                Debug.LogException(exception);
+            }
 
             token.ThrowIfCancellationRequested();
             return Transition.GoTo<MenuState>();
@@ -29,7 +37,10 @@ namespace Game.App.States
         private async UniTask RunBattleAsync(CancellationToken token)
         {
             await using var scene = await SceneLease.LoadAsync(SceneNames.Battle, token);
-            using var scope = applicationScope.CreateChild<BattleLifetimeScope>(childScopeName: "Battle Scope");
+            var stage = scene.Find<BattleStage>();
+            using var scope = applicationScope.CreateChild<BattleLifetimeScope>(
+                builder => builder.RegisterInstance(stage),
+                "Battle Scope");
 
             var session = scope.Container.Resolve<BattleSession>();
             await session.RunAsync(token);

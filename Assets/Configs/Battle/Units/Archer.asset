@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Archer
   m_EditorClassIdentifier: Game::Game.Gameplay.Config.UnitConfig
   displayName: Archer
+  sprite: {fileID: 21300000, guid: 64735edc8aa1c2748b9aa2f6861ea09d, type: 3}
   maxHp: 18
   speed: 6
   attack: 6

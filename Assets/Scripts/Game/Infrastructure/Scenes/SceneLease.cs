@@ -21,6 +21,18 @@ namespace Game.Infrastructure.Scenes
 
         public Scene Scene => SceneManager.GetSceneByName(sceneName);
 
+        public T Find<T>() where T : Component
+        {
+            foreach (var root in Scene.GetRootGameObjects()) {
+                var component = root.GetComponentInChildren<T>(true);
+                if (component != null) {
+                    return component;
+                }
+            }
+
+            throw new InvalidOperationException($"Scene '{sceneName}' has no {typeof(T).Name}.");
+        }
+
         public static async UniTask<SceneLease> LoadAsync(string sceneName, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();

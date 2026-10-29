@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Warrior
   m_EditorClassIdentifier: Game::Game.Gameplay.Config.UnitConfig
   displayName: Warrior
+  sprite: {fileID: 21300000, guid: 0d222478b8af032418396d3bd19eb710, type: 3}
   maxHp: 30
   speed: 3
   attack: 6

@@ -96,14 +96,14 @@ namespace Combat.Rules
         public ActionResult Apply(Decision decision, Group allies, Group opponents)
         {
             if (decision.Target == null) {
-                return new ActionResult(decision.Actor, decision.Ability, Array.Empty<TargetOutcome>());
+                return new ActionResult(decision.Actor, decision.Ability, null, Array.Empty<TargetOutcome>());
             }
 
             var outcomes = AffectedUnits(decision.Ability, decision.Target, allies, opponents)
                 .Select(target => Resolve(decision.Actor, decision.Ability, target, allies))
                 .ToList();
             
-            return new ActionResult(decision.Actor, decision.Ability, outcomes);
+            return new ActionResult(decision.Actor, decision.Ability, decision.Target, outcomes);
         }
 
         private TargetOutcome Resolve(Unit actor, Ability ability, Unit target, Group allies)

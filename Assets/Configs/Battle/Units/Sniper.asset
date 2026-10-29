@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Sniper
   m_EditorClassIdentifier: Game::Game.Gameplay.Config.UnitConfig
   displayName: Sniper
+  sprite: {fileID: 21300000, guid: e9eba489883df2d49932e3c3a009aebd, type: 3}
   maxHp: 16
   speed: 6
   attack: 7

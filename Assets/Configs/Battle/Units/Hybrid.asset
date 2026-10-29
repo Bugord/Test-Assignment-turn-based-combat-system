@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Hybrid
   m_EditorClassIdentifier: Game::Game.Gameplay.Config.UnitConfig
   displayName: Hybrid
+  sprite: {fileID: 21300000, guid: d4088b7366faf4649baecc44720f2379, type: 3}
   maxHp: 24
   speed: 4
   attack: 5

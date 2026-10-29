@@ -1,5 +1,6 @@
 using Combat.Rules;
 using Combat.Setup;
+using Combat.Units;
 using UnityEngine;
 
 namespace Game.Gameplay.Config
@@ -29,6 +30,8 @@ namespace Game.Gameplay.Config
         [SerializeField]
         [Range(0f, 1f)]
         private float maxHitChance = 0.95f;
+
+        public UnitConfig UnitAt(Team team, int slot) => (team == Team.Player ? player : enemy).UnitAt(slot);
 
         public BattleSetup CreateSetup()
         {

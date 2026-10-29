@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Bowman
   m_EditorClassIdentifier: Game::Game.Gameplay.Config.UnitConfig
   displayName: Bowman
+  sprite: {fileID: 21300000, guid: a711248a53c5f6c4c89986b08cd5653f, type: 3}
   maxHp: 20
   speed: 5
   attack: 6

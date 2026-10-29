@@ -12,7 +12,11 @@ namespace Game.Gameplay.Config
         [SerializeField]
         private string displayName;
 
-        [SerializeField][Min(1)]
+        [SerializeField]
+        private Sprite sprite;
+
+        [SerializeField]
+        [Min(1)]
         private int maxHp = 20;
 
         [SerializeField]
@@ -26,6 +30,8 @@ namespace Game.Gameplay.Config
 
         [SerializeField]
         private List<AbilityConfig> abilities = new List<AbilityConfig>();
+
+        public Sprite Sprite => sprite;
 
         public UnitDefinition CreateDefinition()
         {
