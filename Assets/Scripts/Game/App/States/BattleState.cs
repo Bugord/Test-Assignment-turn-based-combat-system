@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Gameplay;
 using Game.Gameplay.Presentation;
+using Game.Gameplay.UI;
 using Game.Infrastructure;
 using Game.Infrastructure.Scenes;
 using UniState;
@@ -38,12 +39,21 @@ namespace Game.App.States
         {
             await using var scene = await SceneLease.LoadAsync(SceneNames.Battle, token);
             var stage = scene.Find<BattleStage>();
+
+            BattleResult result;
+            do {
+                result = await RunSessionAsync(stage, token);
+            } while (result == BattleResult.Restart);
+        }
+
+        private async UniTask<BattleResult> RunSessionAsync(BattleStage stage, CancellationToken token)
+        {
             using var scope = applicationScope.CreateChild<BattleLifetimeScope>(
                 builder => builder.RegisterInstance(stage),
                 "Battle Scope");
 
             var session = scope.Container.Resolve<BattleSession>();
-            await session.RunAsync(token);
+            return await session.RunAsync(token);
         }
     }
 }

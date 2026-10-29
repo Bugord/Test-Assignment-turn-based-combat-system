@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using Combat.Units;
 using Cysharp.Threading.Tasks;
 using Game.Gameplay.UI;
 using UIKit;
@@ -17,32 +18,27 @@ namespace Game.Gameplay
             this.screenNavigator = screenNavigator ?? throw new ArgumentNullException(nameof(screenNavigator));
         }
 
-        public async UniTask RunAsync(CancellationToken token)
+        public async UniTask<BattleResult> RunAsync(CancellationToken token)
         {
-            using var battleCancellation = CancellationTokenSource.CreateLinkedTokenSource(token);
-            using var screenCancellation = CancellationTokenSource.CreateLinkedTokenSource(token);
-            var battle = RunBattleAsync(screenCancellation, battleCancellation.Token);
+            using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(token);
+            var hud = screenNavigator.RunAsync<BattleViewModel, BattleResult>(cancellation.Token).AsUniTask().Preserve();
+            var battle = PlayAsync(cancellation.Token).Preserve();
 
             try {
-                await screenNavigator.RunAsync<BattleViewModel, BattleResult>(screenCancellation.Token);
+                var (winner, hudResult, battleResult) = await UniTask.WhenAny(hud, battle);
+                return winner == 0 ? hudResult : battleResult;
             }
             finally {
-                battleCancellation.Cancel();
-                await battle;
+                cancellation.Cancel();
+                await hud.SuppressCancellationThrow();
+                await battle.SuppressCancellationThrow();
             }
         }
 
-        private async UniTask RunBattleAsync(CancellationTokenSource screenCancellation, CancellationToken token)
+        private async UniTask<BattleResult> PlayAsync(CancellationToken token)
         {
-            try {
-                await driver.RunAsync(token);
-            }
-            catch (OperationCanceledException) when (token.IsCancellationRequested) {
-            }
-            catch {
-                screenCancellation.Cancel();
-                throw;
-            }
+            var winner = await driver.RunAsync(token);
+            return await screenNavigator.RunAsync<BattleResultPopupViewModel, Team, BattleResult>(winner, token);
         }
     }
 }

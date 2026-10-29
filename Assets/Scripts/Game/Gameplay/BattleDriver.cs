@@ -27,7 +27,7 @@ namespace Game.Gameplay
             this.enemyController = enemyController ?? throw new ArgumentNullException(nameof(enemyController));
         }
 
-        public async UniTask RunAsync(CancellationToken token)
+        public async UniTask<Team> RunAsync(CancellationToken token)
         {
             while (battle.Winner == null) {
                 var actor = battle.ActiveUnit;
@@ -38,7 +38,9 @@ namespace Game.Gameplay
                 await presentation.PlayAsync(result, token);
             }
 
-            await presentation.ShowBattleEndAsync(battle.Winner.Value, token);
+            var winner = battle.Winner.Value;
+            await presentation.ShowBattleEndAsync(winner, token);
+            return winner;
         }
 
         private IUnitController ControllerOf(Unit unit) => unit.Team == Team.Player ? playerController : enemyController;

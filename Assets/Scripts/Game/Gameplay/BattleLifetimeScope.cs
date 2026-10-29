@@ -16,6 +16,7 @@ namespace Game.Gameplay
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterScreen<BattleViewModel, BattleView>();
+            builder.RegisterScreen<BattleResultPopupViewModel, BattleResultPopupView>();
             builder.Register(CreateBattle, Lifetime.Scoped);
             builder.Register<UnitViews>(Lifetime.Scoped);
             builder.Register<BattleHud>(Lifetime.Scoped);

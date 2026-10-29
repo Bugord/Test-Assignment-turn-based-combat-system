@@ -16,5 +16,7 @@ MonoBehaviour:
   entries:
   - screenId: Battle
     uxml: {fileID: 9197481963319205126, guid: b65905bb7a8bbe34088df3824b128afe, type: 3}
+  - screenId: BattleResultPopup
+    uxml: {fileID: 9197481963319205126, guid: 45fb1559fe5c0d846b96bbcfcc09da40, type: 3}
   - screenId: MainMenu
     uxml: {fileID: 9197481963319205126, guid: f344cf791aa81f444a1a6b1924445833, type: 3}

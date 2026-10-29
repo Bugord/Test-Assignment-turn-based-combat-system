@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../Common.uss" />
+    <ui:VisualElement name="battle-result-popup" class="screen-fill popup-backdrop">
+        <ui:VisualElement class="panel">
+            <ui:Label name="result-title" class="title" />
+            <ui:Button name="restart-button" text="Play again" class="menu-button" />
+            <ui:Button name="menu-button" text="Menu" class="menu-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
