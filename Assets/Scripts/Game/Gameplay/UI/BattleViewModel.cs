@@ -34,11 +34,15 @@ namespace Game.Gameplay.UI
         [CreateProperty]
         public string Hint {
             get {
+                if (hud.Winner != null) {
+                    return string.Empty;
+                }
+
                 if (playerController.CurrentTurnRequest != null) {
                     return selectedAbility == null ? "Choose an ability" : $"{selectedAbility}: choose a target";
                 }
 
-                return "Enemy turn";
+                return hud.ActiveUnit?.Team == Team.Enemy ? "Enemy turn" : string.Empty;
             }
         }
 
@@ -120,7 +124,7 @@ namespace Game.Gameplay.UI
 
         private void OnActiveUnitChanged()
         {
-            Notify(nameof(ActiveUnitText));
+            Notify(nameof(ActiveUnitText), nameof(Hint));
         }
 
         private void OnCurrentTurnRequestChanged()
