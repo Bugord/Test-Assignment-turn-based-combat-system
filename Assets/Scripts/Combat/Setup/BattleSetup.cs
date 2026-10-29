@@ -7,9 +7,9 @@ namespace Combat.Setup
     {
         public GroupDefinition Player { get; }
         public GroupDefinition Enemy { get; }
-        public HitChanceConfig HitChance { get; }
+        public HitChanceSettings HitChance { get; }
 
-        public BattleSetup(GroupDefinition player, GroupDefinition enemy, HitChanceConfig hitChance)
+        public BattleSetup(GroupDefinition player, GroupDefinition enemy, HitChanceSettings hitChance)
         {
             Player = player ?? throw new ArgumentNullException(nameof(player));
             Enemy = enemy ?? throw new ArgumentNullException(nameof(enemy));

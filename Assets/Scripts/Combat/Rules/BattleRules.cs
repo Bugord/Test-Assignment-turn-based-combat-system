@@ -8,10 +8,10 @@ namespace Combat.Rules
 {
     public class BattleRules
     {
-        private readonly HitChanceConfig hitChance;
+        private readonly HitChanceSettings hitChance;
         private readonly IRandom random;
 
-        public BattleRules(HitChanceConfig hitChance, IRandom random)
+        public BattleRules(HitChanceSettings hitChance, IRandom random)
         {
             this.hitChance = hitChance ?? throw new ArgumentNullException(nameof(hitChance));
             this.random = random ?? throw new ArgumentNullException(nameof(random));

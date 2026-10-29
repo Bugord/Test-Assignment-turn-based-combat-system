@@ -41,7 +41,7 @@ namespace Game.Gameplay.Config
                 return ability;
             }
 
-            var hitChance = new HitChanceConfig(baseHitChance, hitChancePerPoint, minHitChance, maxHitChance);
+            var hitChance = new HitChanceSettings(baseHitChance, hitChancePerPoint, minHitChance, maxHitChance);
             return new BattleSetup(player.CreateDefinition(GetAbility), enemy.CreateDefinition(GetAbility), hitChance);
         }
     }
