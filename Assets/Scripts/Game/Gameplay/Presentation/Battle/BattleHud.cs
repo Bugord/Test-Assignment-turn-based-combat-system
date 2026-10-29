@@ -10,14 +10,16 @@ namespace Game.Gameplay.Presentation
     public class BattleHud
     {
         private readonly List<string> log = new List<string>();
+        private readonly List<Unit> queue = new List<Unit>();
         private readonly Battle battle;
 
         public IReadOnlyList<string> Log => log;
         public Unit ActiveUnit { get; private set; }
+        public IReadOnlyList<Unit> Queue => queue;
         public Team? Winner { get; private set; }
 
         public event Action LogChanged;
-        public event Action ActiveUnitChanged;
+        public event Action TurnChanged;
 
         public BattleHud(Battle battle)
         {
@@ -27,7 +29,9 @@ namespace Game.Gameplay.Presentation
         public void SetActiveUnit(Unit actor)
         {
             ActiveUnit = actor;
-            ActiveUnitChanged?.Invoke();
+            queue.Clear();
+            queue.AddRange(battle.RemainingQueue);
+            TurnChanged?.Invoke();
             AddLine($"Round {battle.Round}, {actor}'s turn");
         }
 
@@ -39,8 +43,9 @@ namespace Game.Gameplay.Presentation
         public void SetWinner(Team winner)
         {
             ActiveUnit = null;
+            queue.Clear();
             Winner = winner;
-            ActiveUnitChanged?.Invoke();
+            TurnChanged?.Invoke();
             AddLine($"{winner} won in round {battle.Round}");
         }
 

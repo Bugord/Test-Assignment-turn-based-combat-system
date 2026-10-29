@@ -2,7 +2,10 @@
     <ui:Style src="../Common.uss" />
     <ui:VisualElement name="battle" class="battle-screen">
         <ui:VisualElement class="battle-top">
-            <ui:Label name="active-unit-label" class="active-unit" />
+            <ui:VisualElement class="turn-info">
+                <ui:Label name="active-unit-label" class="active-unit" />
+                <ui:VisualElement name="turn-queue" class="turn-queue" />
+            </ui:VisualElement>
             <ui:VisualElement class="battle-controls">
                 <ui:Button name="menu-button" text="Menu" class="menu-button" />
             </ui:VisualElement>

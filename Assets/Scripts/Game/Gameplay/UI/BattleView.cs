@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Combat.Units;
 using UIKit;
 using UnityEngine.UIElements;
 
@@ -9,6 +10,7 @@ namespace Game.Gameplay.UI
     {
         private readonly List<string> logLines = new List<string>();
         private ListView logList;
+        private VisualElement turnQueue;
         private VisualElement abilityButtons;
         private VisualElement targetButtons;
         private VisualElement targetPanel;
@@ -20,6 +22,7 @@ namespace Game.Gameplay.UI
             logList.bindItem = BindLogItem;
             logList.itemsSource = logLines;
 
+            turnQueue = Require<VisualElement>("turn-queue");
             abilityButtons = Require<VisualElement>("ability-buttons");
             targetButtons = Require<VisualElement>("target-buttons");
             targetPanel = Require<VisualElement>("target-panel");
@@ -28,9 +31,11 @@ namespace Game.Gameplay.UI
             BindText("hint-label", nameof(BattleViewModel.Hint));
 
             Observe(nameof(BattleViewModel.LogLines), SyncLog);
+            Observe(nameof(BattleViewModel.TurnOrder), RebuildTurnQueue);
             Observe(nameof(BattleViewModel.AbilityOptions), RebuildAbilityButtons);
             Observe(nameof(BattleViewModel.TargetOptions), RebuildTargetButtons);
             SyncLog();
+            RebuildTurnQueue();
             RebuildAbilityButtons();
             RebuildTargetButtons();
 
@@ -63,6 +68,34 @@ namespace Game.Gameplay.UI
 
             logList.RefreshItems();
             logList.ScrollToItem(logLines.Count - 1);
+        }
+
+        private void RebuildTurnQueue()
+        {
+            turnQueue.Clear();
+            var order = ViewModel.TurnOrder;
+            for (var i = 0; i < order.Count; i++) {
+                turnQueue.Add(CreateTurnQueueItem(order[i], i == 0));
+            }
+        }
+
+        private VisualElement CreateTurnQueueItem(Unit unit, bool active)
+        {
+            var item = new VisualElement();
+            item.AddToClassList("turn-queue-item");
+            item.AddToClassList(unit.Team == Team.Player ? "turn-queue-item--player" : "turn-queue-item--enemy");
+            item.EnableInClassList("turn-queue-item--active", active);
+
+            var portrait = new VisualElement();
+            portrait.AddToClassList("turn-queue-portrait");
+            portrait.style.backgroundImage = new StyleBackground(ViewModel.PortraitOf(unit));
+            item.Add(portrait);
+
+            var name = new Label(unit.Name);
+            name.AddToClassList("turn-queue-name");
+            item.Add(name);
+
+            return item;
         }
 
         private void RebuildAbilityButtons()

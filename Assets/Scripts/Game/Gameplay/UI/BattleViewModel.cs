@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Combat.Abilities;
 using Combat.Units;
+using Game.Gameplay.Config;
 using Game.Gameplay.Controllers;
 using Game.Gameplay.Presentation;
 using UIKit;
 using Unity.Properties;
+using UnityEngine;
 
 namespace Game.Gameplay.UI
 {
@@ -13,11 +16,20 @@ namespace Game.Gameplay.UI
     {
         private readonly BattleHud hud;
         private readonly PlayerController playerController;
+        private readonly BattleConfig config;
 
         private Ability selectedAbility;
 
         [CreateProperty]
         public IReadOnlyList<string> LogLines => hud.Log;
+
+        [CreateProperty]
+        public IReadOnlyList<Unit> TurnOrder {
+            get {
+                var active = hud.ActiveUnit;
+                return active == null ? Array.Empty<Unit>() : hud.Queue.Prepend(active).ToList();
+            }
+        }
 
         [CreateProperty]
         public string ActiveUnitText {
@@ -65,18 +77,21 @@ namespace Game.Gameplay.UI
         public Command CancelAbility { get; }
         public Command BackToMenu { get; }
 
-        public BattleViewModel(BattleHud hud, PlayerController playerController)
+        public BattleViewModel(BattleHud hud, PlayerController playerController, BattleConfig config)
         {
             this.hud = hud ?? throw new ArgumentNullException(nameof(hud));
             this.playerController = playerController ?? throw new ArgumentNullException(nameof(playerController));
+            this.config = config ?? throw new ArgumentNullException(nameof(config));
 
             CancelAbility = new Command(() => SelectAbility(null), () => selectedAbility != null);
             BackToMenu = new Command(() => SetResult(BattleResult.BackToMenu));
 
             hud.LogChanged += OnLogChanged;
-            hud.ActiveUnitChanged += OnActiveUnitChanged;
+            hud.TurnChanged += OnTurnChanged;
             playerController.CurrentTurnRequestChanged += OnCurrentTurnRequestChanged;
         }
+
+        public Sprite PortraitOf(Unit unit) => config.UnitAt(unit.Team, unit.Slot).Sprite;
 
         public void ChooseAbility(Ability ability)
         {
@@ -106,7 +121,7 @@ namespace Game.Gameplay.UI
         protected override void OnDispose()
         {
             hud.LogChanged -= OnLogChanged;
-            hud.ActiveUnitChanged -= OnActiveUnitChanged;
+            hud.TurnChanged -= OnTurnChanged;
             playerController.CurrentTurnRequestChanged -= OnCurrentTurnRequestChanged;
         }
 
@@ -122,9 +137,9 @@ namespace Game.Gameplay.UI
             Notify(nameof(LogLines));
         }
 
-        private void OnActiveUnitChanged()
+        private void OnTurnChanged()
         {
-            Notify(nameof(ActiveUnitText), nameof(Hint));
+            Notify(nameof(ActiveUnitText), nameof(Hint), nameof(TurnOrder));
         }
 
         private void OnCurrentTurnRequestChanged()
