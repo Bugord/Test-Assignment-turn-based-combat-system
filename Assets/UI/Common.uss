@@ -31,9 +31,52 @@
     padding: 24px;
 }
 
+.battle-top {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.active-unit {
+    font-size: 30px;
+    color: rgb(240, 240, 240);
+}
+
 .battle-controls {
-    align-self: flex-end;
     width: 220px;
+}
+
+.battle-bottom {
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.choice-panel {
+    flex-grow: 1;
+    margin-left: 24px;
+}
+
+.hint {
+    font-size: 22px;
+    color: rgb(240, 240, 240);
+    margin-bottom: 8px;
+}
+
+.choice-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.target-panel {
+    display: none;
+    align-items: flex-start;
+}
+
+.choice-button {
+    min-width: 160px;
+    height: 64px;
+    font-size: 18px;
+    margin: 4px;
 }
 
 .battle-log {

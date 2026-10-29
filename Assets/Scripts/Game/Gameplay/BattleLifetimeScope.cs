@@ -1,6 +1,5 @@
 using Combat;
 using Combat.Ai;
-using Combat.Rules;
 using Combat.Setup;
 using Game.Gameplay.Config;
 using Game.Gameplay.Controllers;
@@ -18,9 +17,10 @@ namespace Game.Gameplay
         {
             builder.RegisterScreen<BattleViewModel, BattleView>();
             builder.Register(CreateBattle, Lifetime.Scoped);
-            builder.Register<BattleLog>(Lifetime.Scoped);
-            builder.Register<TurnGate>(Lifetime.Scoped);
-            builder.Register<IBattlePresentation, LogPresenter>(Lifetime.Scoped);
+            builder.Register<BattleHud>(Lifetime.Scoped).As<IBattlePresentation>().AsSelf();
+            builder.Register<PlayerController>(Lifetime.Scoped);
+            builder.Register<AiDecisionMaker>(Lifetime.Scoped);
+            builder.Register<AiController>(Lifetime.Scoped);
             builder.Register(CreateDriver, Lifetime.Scoped);
             builder.Register<BattleSession>(Lifetime.Scoped);
         }
@@ -33,13 +33,11 @@ namespace Game.Gameplay
 
         private BattleDriver CreateDriver(IObjectResolver resolver)
         {
-            var random = resolver.Resolve<IRandom>();
             return new BattleDriver(
                 resolver.Resolve<Battle>(),
                 resolver.Resolve<IBattlePresentation>(),
-                resolver.Resolve<TurnGate>(),
-                new AiController(new AiDecisionMaker(random)),
-                new AiController(new AiDecisionMaker(random)));
+                resolver.Resolve<PlayerController>(),
+                resolver.Resolve<AiController>());
         }
     }
 }

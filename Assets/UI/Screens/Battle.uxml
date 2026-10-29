@@ -1,10 +1,22 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
     <ui:Style src="../Common.uss" />
     <ui:VisualElement name="battle" class="battle-screen">
-        <ui:VisualElement class="battle-controls">
-            <ui:Button name="menu-button" text="Menu" class="menu-button" />
-            <ui:Button name="next-turn-button" text="Next turn" class="menu-button" />
+        <ui:VisualElement class="battle-top">
+            <ui:Label name="active-unit-label" class="active-unit" />
+            <ui:VisualElement class="battle-controls">
+                <ui:Button name="menu-button" text="Menu" class="menu-button" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:ListView name="log-list" class="battle-log" selection-type="None" fixed-item-height="26" />
+        <ui:VisualElement class="battle-bottom">
+            <ui:ListView name="log-list" class="battle-log" selection-type="None" fixed-item-height="26" />
+            <ui:VisualElement class="choice-panel">
+                <ui:Label name="hint-label" class="hint" />
+                <ui:VisualElement name="ability-buttons" class="choice-row" />
+                <ui:VisualElement name="target-panel" class="target-panel">
+                    <ui:VisualElement name="target-buttons" class="choice-row" />
+                    <ui:Button name="cancel-ability-button" text="Back" class="choice-button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

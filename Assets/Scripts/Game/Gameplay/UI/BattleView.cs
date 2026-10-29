@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UIKit;
 using UnityEngine.UIElements;
@@ -8,6 +9,9 @@ namespace Game.Gameplay.UI
     {
         private readonly List<string> logLines = new List<string>();
         private ListView logList;
+        private VisualElement abilityButtons;
+        private VisualElement targetButtons;
+        private VisualElement targetPanel;
 
         protected override void OnAttach()
         {
@@ -16,10 +20,21 @@ namespace Game.Gameplay.UI
             logList.bindItem = BindLogItem;
             logList.itemsSource = logLines;
 
-            Observe(nameof(BattleViewModel.LogLines), SyncLog);
-            SyncLog();
+            abilityButtons = Require<VisualElement>("ability-buttons");
+            targetButtons = Require<VisualElement>("target-buttons");
+            targetPanel = Require<VisualElement>("target-panel");
 
-            BindCommand("next-turn-button", ViewModel.NextTurn);
+            BindText("active-unit-label", nameof(BattleViewModel.ActiveUnitText));
+            BindText("hint-label", nameof(BattleViewModel.Hint));
+
+            Observe(nameof(BattleViewModel.LogLines), SyncLog);
+            Observe(nameof(BattleViewModel.AbilityOptions), RebuildAbilityButtons);
+            Observe(nameof(BattleViewModel.TargetOptions), RebuildTargetButtons);
+            SyncLog();
+            RebuildAbilityButtons();
+            RebuildTargetButtons();
+
+            BindCommand("cancel-ability-button", ViewModel.CancelAbility);
             BindCommand("menu-button", ViewModel.BackToMenu);
         }
 
@@ -48,6 +63,33 @@ namespace Game.Gameplay.UI
 
             logList.RefreshItems();
             logList.ScrollToItem(logLines.Count - 1);
+        }
+
+        private void RebuildAbilityButtons()
+        {
+            abilityButtons.Clear();
+            foreach (var ability in ViewModel.AbilityOptions) {
+                abilityButtons.Add(CreateChoiceButton(ability.Name, () => ViewModel.ChooseAbility(ability)));
+            }
+        }
+
+        private void RebuildTargetButtons()
+        {
+            targetButtons.Clear();
+            var targets = ViewModel.TargetOptions;
+            foreach (var target in targets) {
+                var text = $"{target}\nHP {target.Hp}/{target.Stats.MaxHp}";
+                targetButtons.Add(CreateChoiceButton(text, () => ViewModel.ChooseTarget(target)));
+            }
+
+            targetPanel.style.display = targets.Count > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        private Button CreateChoiceButton(string text, Action onClick)
+        {
+            var button = new Button(onClick) { text = text };
+            button.AddToClassList("choice-button");
+            return button;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Combat;
@@ -8,34 +9,51 @@ using Cysharp.Threading.Tasks;
 
 namespace Game.Gameplay.Presentation
 {
-    public class LogPresenter : IBattlePresentation
+    public class BattleHud : IBattlePresentation
     {
         private readonly TimeSpan actionDelay = TimeSpan.FromSeconds(0.3);
+        private readonly List<string> log = new List<string>();
         private readonly Battle battle;
-        private readonly BattleLog log;
 
-        public LogPresenter(Battle battle, BattleLog log)
+        public IReadOnlyList<string> Log => log;
+        public Unit ActiveUnit { get; private set; }
+        public Team? Winner { get; private set; }
+
+        public event Action LogChanged;
+        public event Action ActiveUnitChanged;
+
+        public BattleHud(Battle battle)
         {
             this.battle = battle ?? throw new ArgumentNullException(nameof(battle));
-            this.log = log ?? throw new ArgumentNullException(nameof(log));
         }
 
         public UniTask ShowTurnStartAsync(Unit actor, CancellationToken token)
         {
-            log.Add($"Round {battle.Round}, {actor}'s turn");
+            ActiveUnit = actor;
+            ActiveUnitChanged?.Invoke();
+            AddLine($"Round {battle.Round}, {actor}'s turn");
             return UniTask.CompletedTask;
         }
 
         public async UniTask PlayAsync(ActionResult result, CancellationToken token)
         {
-            log.Add(Describe(result));
+            AddLine(Describe(result));
             await UniTask.Delay(actionDelay, cancellationToken: token);
         }
 
         public UniTask ShowBattleEndAsync(Team winner, CancellationToken token)
         {
-            log.Add($"{winner} won in round {battle.Round}");
+            ActiveUnit = null;
+            Winner = winner;
+            ActiveUnitChanged?.Invoke();
+            AddLine($"{winner} won in round {battle.Round}");
             return UniTask.CompletedTask;
+        }
+
+        private void AddLine(string line)
+        {
+            log.Add(line);
+            LogChanged?.Invoke();
         }
 
         private string Describe(ActionResult result)
