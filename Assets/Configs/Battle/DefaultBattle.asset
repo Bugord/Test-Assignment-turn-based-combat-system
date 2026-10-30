@@ -12,20 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78d7733a39fb8344289e0e4206ec107f, type: 3}
   m_Name: DefaultBattle
   m_EditorClassIdentifier: Game::Game.Gameplay.Config.BattleConfig
-  player:
-    slotCount: 4
-    slots:
-    - {fileID: 11400000, guid: 2eefda4041e7996458f056a4ed20ac31, type: 2}
-    - {fileID: 11400000, guid: 3709fbc3e5c996946b8b022be8bff747, type: 2}
-    - {fileID: 11400000, guid: e9fcc3e7fc9fc55458f62186ec10b50f, type: 2}
-    - {fileID: 11400000, guid: 94a80f2bdb9c0c24b831ad3652ae69c5, type: 2}
-  enemy:
-    slotCount: 4
-    slots:
-    - {fileID: 11400000, guid: 95966b62242bf5f4d844d077ec66cedb, type: 2}
-    - {fileID: 11400000, guid: 586fefdb1c083f74184e13f2d0d633dc, type: 2}
-    - {fileID: 11400000, guid: 1622f3c20bfce5542b095b41f3ee13ff, type: 2}
-    - {fileID: 11400000, guid: 566e72a1937e5ee489d5e0a256e07b87, type: 2}
+  defaultLineup:
+    player:
+      slotCount: 4
+      slots:
+      - {fileID: 11400000, guid: 2eefda4041e7996458f056a4ed20ac31, type: 2}
+      - {fileID: 11400000, guid: 3709fbc3e5c996946b8b022be8bff747, type: 2}
+      - {fileID: 11400000, guid: e9fcc3e7fc9fc55458f62186ec10b50f, type: 2}
+      - {fileID: 11400000, guid: 94a80f2bdb9c0c24b831ad3652ae69c5, type: 2}
+    enemy:
+      slotCount: 4
+      slots:
+      - {fileID: 11400000, guid: 95966b62242bf5f4d844d077ec66cedb, type: 2}
+      - {fileID: 11400000, guid: 586fefdb1c083f74184e13f2d0d633dc, type: 2}
+      - {fileID: 11400000, guid: 1622f3c20bfce5542b095b41f3ee13ff, type: 2}
+      - {fileID: 11400000, guid: 566e72a1937e5ee489d5e0a256e07b87, type: 2}
   baseHitChance: 0.75
   hitChancePerPoint: 0.05
   minHitChance: 0.1

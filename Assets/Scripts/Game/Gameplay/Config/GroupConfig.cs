@@ -16,6 +16,16 @@ namespace Game.Gameplay.Config
         [SerializeField]
         private List<UnitConfig> slots = new List<UnitConfig>();
 
+        public GroupConfig()
+        {
+        }
+
+        public GroupConfig(int slotCount, IEnumerable<UnitConfig> slots)
+        {
+            this.slotCount = slotCount;
+            this.slots = slots?.ToList() ?? throw new ArgumentNullException(nameof(slots));
+        }
+
         public UnitConfig UnitAt(int slot) => slots[slot];
 
         public GroupDefinition CreateDefinition()

@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Gameplay;
+using Game.Gameplay.Config;
 using Game.Gameplay.Presentation;
 using Game.Gameplay.UI;
 using Game.Infrastructure;
@@ -13,7 +14,7 @@ using VContainer.Unity;
 
 namespace Game.App.States
 {
-    public class BattleState : StateBase
+    public class BattleState : StateBase<BattleLineup>
     {
         private readonly LifetimeScope applicationScope;
 
@@ -49,7 +50,10 @@ namespace Game.App.States
         private async UniTask<BattleResult> RunSessionAsync(BattleStage stage, CancellationToken token)
         {
             using var scope = applicationScope.CreateChild<BattleLifetimeScope>(
-                builder => builder.RegisterInstance(stage),
+                builder => {
+                    builder.RegisterInstance(stage);
+                    builder.RegisterInstance(Payload);
+                },
                 "Battle Scope");
 
             var session = scope.Container.Resolve<BattleSession>();

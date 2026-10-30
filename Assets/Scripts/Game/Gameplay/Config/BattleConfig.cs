@@ -1,6 +1,5 @@
 using Combat.Rules;
 using Combat.Setup;
-using Combat.Units;
 using UnityEngine;
 
 namespace Game.Gameplay.Config
@@ -9,10 +8,7 @@ namespace Game.Gameplay.Config
     public class BattleConfig : ScriptableObject
     {
         [SerializeField]
-        private GroupConfig player = new GroupConfig();
-
-        [SerializeField]
-        private GroupConfig enemy = new GroupConfig();
+        private BattleLineup defaultLineup = new BattleLineup();
 
         [Header("Hit chance")]
         [SerializeField]
@@ -31,12 +27,12 @@ namespace Game.Gameplay.Config
         [Range(0f, 1f)]
         private float maxHitChance = 0.95f;
 
-        public UnitConfig UnitAt(Team team, int slot) => (team == Team.Player ? player : enemy).UnitAt(slot);
+        public BattleLineup DefaultLineup => defaultLineup;
 
-        public BattleSetup CreateSetup()
+        public BattleSetup CreateSetup(BattleLineup lineup)
         {
             var hitChance = new HitChanceSettings(baseHitChance, hitChancePerPoint, minHitChance, maxHitChance);
-            return new BattleSetup(player.CreateDefinition(), enemy.CreateDefinition(), hitChance);
+            return new BattleSetup(lineup.Player.CreateDefinition(), lineup.Enemy.CreateDefinition(), hitChance);
         }
     }
 }

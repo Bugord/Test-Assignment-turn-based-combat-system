@@ -32,7 +32,7 @@ namespace Game.Gameplay
 
         private Battle CreateBattle(IObjectResolver resolver)
         {
-            var setup = resolver.Resolve<BattleConfig>().CreateSetup();
+            var setup = resolver.Resolve<BattleConfig>().CreateSetup(resolver.Resolve<BattleLineup>());
             return resolver.Resolve<BattleFactory>().Create(setup);
         }
 

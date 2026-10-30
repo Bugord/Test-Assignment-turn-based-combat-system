@@ -12,11 +12,12 @@ namespace Game.Gameplay.Presentation
     {
         private readonly Dictionary<Unit, UnitView> views = new Dictionary<Unit, UnitView>();
 
-        public UnitViews(Battle battle, BattleStage stage, BattleConfig config)
+        public UnitViews(Battle battle, BattleStage stage, BattleLineup lineup)
         {
             foreach (var unit in battle.Player.Units.Concat(battle.Enemy.Units)) {
                 var view = stage.Spawn(unit.Team, unit.Slot);
-                view.Setup(config.UnitAt(unit.Team, unit.Slot).Sprite, unit.Team == Team.Enemy);
+                var unitConfig = lineup.UnitConfigAt(unit.Team, unit.Slot);
+                view.Setup(unitConfig.Sprite, unit.Team == Team.Enemy);
                 view.SetHp(unit.Hp, unit.Stats.MaxHp);
                 views.Add(unit, view);
             }

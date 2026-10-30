@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Game.Gameplay.Config;
 using Game.Infrastructure;
 using Game.Infrastructure.Scenes;
 using Game.Menu;
@@ -14,10 +15,12 @@ namespace Game.App.States
     public class MenuState : StateBase
     {
         private readonly LifetimeScope applicationScope;
+        private readonly BattleConfig battleConfig;
 
-        public MenuState(LifetimeScope applicationScope)
+        public MenuState(LifetimeScope applicationScope, BattleConfig battleConfig)
         {
             this.applicationScope = applicationScope;
+            this.battleConfig = battleConfig;
         }
 
         public override async UniTask<StateTransitionInfo> Execute(CancellationToken token)
@@ -26,7 +29,7 @@ namespace Game.App.States
             token.ThrowIfCancellationRequested();
 
             return result switch {
-                MainMenuResult.Battle => Transition.GoTo<BattleState>(),
+                MainMenuResult.Battle => Transition.GoTo<BattleState, BattleLineup>(battleConfig.DefaultLineup),
                 MainMenuResult.Quit => Transition.GoTo<ClosingAppState>(),
                 _ => throw new ArgumentOutOfRangeException(nameof(result), result, null)
             };

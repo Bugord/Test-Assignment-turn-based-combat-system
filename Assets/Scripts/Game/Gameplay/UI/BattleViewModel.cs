@@ -16,7 +16,7 @@ namespace Game.Gameplay.UI
     {
         private readonly BattleHud hud;
         private readonly PlayerController playerController;
-        private readonly BattleConfig config;
+        private readonly BattleLineup lineup;
         private readonly BattlePause battlePause;
         private readonly IScreenNavigator screenNavigator;
 
@@ -82,13 +82,13 @@ namespace Game.Gameplay.UI
         public BattleViewModel(
             BattleHud hud,
             PlayerController playerController,
-            BattleConfig config,
+            BattleLineup lineup,
             BattlePause battlePause,
             IScreenNavigator screenNavigator)
         {
             this.hud = hud ?? throw new ArgumentNullException(nameof(hud));
             this.playerController = playerController ?? throw new ArgumentNullException(nameof(playerController));
-            this.config = config ?? throw new ArgumentNullException(nameof(config));
+            this.lineup = lineup ?? throw new ArgumentNullException(nameof(lineup));
             this.battlePause = battlePause ?? throw new ArgumentNullException(nameof(battlePause));
             this.screenNavigator = screenNavigator ?? throw new ArgumentNullException(nameof(screenNavigator));
 
@@ -100,7 +100,7 @@ namespace Game.Gameplay.UI
             playerController.CurrentTurnRequestChanged += OnCurrentTurnRequestChanged;
         }
 
-        public Sprite PortraitOf(Unit unit) => config.UnitAt(unit.Team, unit.Slot).Sprite;
+        public Sprite PortraitOf(Unit unit) => lineup.UnitConfigAt(unit.Team, unit.Slot).Sprite;
 
         public void ChooseAbility(Ability ability)
         {
